@@ -1,29 +1,46 @@
 package com.automation;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import javax.print.DocFlavor;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class FirstUITest {
+public class FirstUITestRefactor {
+
+    public static final String baseURL = "https://github.com/";
+    static WebDriver driver;
+
+
+    @BeforeAll
+    public static void beforeMethodStart() {
+
+        System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
+        ChromeOptions options = new ChromeOptions().addArguments("start-fullscreen");
+        driver = new ChromeDriver(options);
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+    }
+        @AfterAll
+        public static void closeBrowserAfter(){
+            driver.close();
+
+        }
+
+
+
 
     @Test
     public void isUserNameCorrect() {
 
         //Arrange
-        System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
-        ChromeOptions options = new ChromeOptions().addArguments("start-fullscreen");
-        WebDriver driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         String user = "andrejs-ps";
-        driver.get("https://github.com/" + user);
+        driver.get(baseURL+user);
+
 
 
         //Act
@@ -33,7 +50,7 @@ public class FirstUITest {
         //Assert
 
         Assertions.assertEquals(user, actualUserName);
-        driver.close();
+
 
 
     }
@@ -41,12 +58,9 @@ public class FirstUITest {
     @Test
     public void clickMethod() {
         //Arrange
-        System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
-        ChromeOptions options = new ChromeOptions().addArguments("start-fullscreen");
-        WebDriver driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
         String user = "andrejs-ps/";
-        driver.get("https://github.com/" + user);
+        driver.get(baseURL + user);
 
 
         //Act
@@ -57,21 +71,15 @@ public class FirstUITest {
 
         //Assert
 
-        Assertions.assertEquals("https://github.com/" + user + repository, actualLink);
+        Assertions.assertEquals(baseURL + user + repository, actualLink);
 
-        driver.close();
+
 
 
     }
 
     @Test
     public void countMethod() {
-        //Arrange
-        System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
-        ChromeOptions options = new ChromeOptions().addArguments("start-fullscreen");
-        WebDriver driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-
 
 
         //Act
@@ -81,6 +89,6 @@ public class FirstUITest {
 
         //Assert
     Assertions.assertEquals(6,repositoriesNumber.size());
-    driver.close();
+
     }
 }
